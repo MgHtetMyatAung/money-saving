@@ -2,6 +2,7 @@ import prisma from "@/libs/prisma";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { generateAccessToken, generateRefreshToken } from "@/libs/verifyToken";
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || "access_secret";
 const REFRESH_TOKEN_SECRET =
@@ -34,12 +35,8 @@ export async function POST(req) {
   }
 
   // Generate access and refresh tokens
-  const accessToken = jwt.sign({ userId: user.id }, ACCESS_TOKEN_SECRET, {
-    expiresIn: "15m",
-  });
-  const refreshToken = jwt.sign({ userId: user.id }, REFRESH_TOKEN_SECRET, {
-    expiresIn: "7d",
-  });
+  const accessToken = generateAccessToken({ userId: user.id });
+  const refreshToken = generateRefreshToken({ userId: user.id });
   // Save refresh token in database
   await prisma.refreshToken.create({
     data: {

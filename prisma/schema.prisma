@@ -32,11 +32,11 @@ model Transaction {
   userId     Int
   // type       TransactionType // Enum for ADD or USE
   type       String
-  amount     Float
+  amount     Int
   date       DateTime        @default(now())
   description String?
-  month      Int // Stores the transaction month (1 for January, 2 for February, etc.)
-  year       Int // Stores the transaction year
+  month      Int? // Stores the transaction month (1 for January, 2 for February, etc.)
+  year       Int? // Stores the transaction year
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
